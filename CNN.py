@@ -16,13 +16,13 @@ train_datagen = ImageDataGenerator(
         zoom_range=0.2,
         horizontal_flip=True)
 training_set = train_datagen.flow_from_directory(
-        'dataset/training_set',
+        'TRAINING SET PATH',
         target_size=(64, 64),
         batch_size=32,
         class_mode='binary')
-test_datagen = ImageDataGenerator(rescale=1./255)
-test_set = test_datagen.flow_from_directory(
-        'dataset/test_set',
+validation_datagen = ImageDataGenerator(rescale=1./255)
+validation_set = validation_datagen.flow_from_directory(
+        'VALIDATION SET PATH',
         target_size=(64, 64),
         batch_size=32,
         class_mode='binary')
@@ -38,16 +38,16 @@ cnn.add(tf.keras.layers.Dense(units = 128,activation = 'relu'))
 cnn.add(tf.keras.layers.Dense(units = 1,activation = 'sigmoid'))
 
 cnn.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
-cnn.fit(x = training_set, validation_data = test_set, epochs = 25)
+cnn.fit(x = training_set, validation_data = validation_set, epochs = 25)
 
-test_image = image.load_img('dataset/single_prediction/cat_or_dog_2.jpg',target_size=(64,64))
+test_image = image.load_img('TEST IMAGE PATH',target_size=(64,64))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis=0)
 result = cnn.predict(test_image)
 if result[0][0] == 1:
-    prediction = "Dog"
+    prediction = "ENTER 1st CLASS"
 else:
-    prediction = "Cat"
+    prediction = "ENTER 2nd CLASS"
 print(prediction)    
     
 
